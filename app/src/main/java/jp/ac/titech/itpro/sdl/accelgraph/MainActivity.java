@@ -11,6 +11,8 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Arrays;
+
 public class MainActivity extends Activity implements SensorEventListener {
 
     private final static String TAG = "MainActivity";
@@ -72,11 +74,12 @@ public class MainActivity extends Activity implements SensorEventListener {
         sensorMgr.unregisterListener(this);
     }
 
+    private final static float alpha = 0.8F;
     @Override
-    public void onSensorChanged(SensorEvent event) {
-        vx = event.values[0];
-        vy = event.values[1];
-        vz = event.values[2];
+    public void onSensorChanged(final SensorEvent event) {
+        vx = alpha*vx + (1-alpha)*event.values[0];
+        vy = alpha*vy + (1-alpha)*event.values[1];
+        vz = alpha*vz + (1-alpha)*event.values[2];
         rate = ((float) (event.timestamp - prevts)) / (1000 * 1000);
         prevts = event.timestamp;
     }
